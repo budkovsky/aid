@@ -7,10 +7,11 @@
 	],
 	"autoload": {
 		"psr-4": {
-			"Budkovsky\\Aid\\": "src"
+			"Budkovsky\\Aid\\" : "src"
 		}
 	},
 	"require": {
 		"phpunit/phpunit": "^8.0"
-	}
+	},
+	"minimum-stability": "dev"
 }
