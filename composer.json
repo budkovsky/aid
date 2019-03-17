@@ -9,5 +9,8 @@
 		"psr-4": {
 			"Budkovsky\\Aid\\": "src"
 		}
+	},
+	"require": {
+		"phpunit/phpunit": "^8.0"
 	}
 }
