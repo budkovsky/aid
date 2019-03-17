@@ -1,0 +1,13 @@
+{
+	"name": "budkovsky/aid",
+	"authors": [
+		{
+			"name": "Budkovsky"
+		}
+	],
+	"autoload": {
+		"psr-4": {
+			"Budkovsky\\Aid\\": "src"
+		}
+	}
+}
