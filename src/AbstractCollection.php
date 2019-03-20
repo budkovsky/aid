@@ -2,8 +2,21 @@
 
 namespace Budkovsky\Aid;
 
-abstract class AbstractCollection implements \IteratorAggregate, \Countable
+/**
+ * Collection class.
+ * Implements ItegratorAggregate and Coutable interfaces.
+ * When extending, define valid collection's item type in `ITEM_TYPE` constant property.
+ */
+abstract class Collection implements \IteratorAggregate, \Countable
 {
+    /**
+     * Item type.
+     * for scalar types, must be compatibile with gettype() return value.
+     * @see http://php.net/manual/en/function.gettype.php
+     * @var string
+     */
+    protected const ITEM_TYPE = \stdClass::class;
+
     /**
      * The collection
      * @var array
@@ -22,9 +35,9 @@ abstract class AbstractCollection implements \IteratorAggregate, \Countable
     /**
      * Static creator of the collection object
      * @param array $collection
-     * @return AbstractCollection
+     * @return Collection
      */
-    public static function create(array $collection = []): AbstractCollection
+    public static function create(array $collection = []): Collection
     {
         return new static($collection);
     }
@@ -50,9 +63,9 @@ abstract class AbstractCollection implements \IteratorAggregate, \Countable
     /**
      * Set or replace the collection
      * @param array $collection
-     * @return AbstractCollection
+     * @return Collection
      */
-    public function set(array $collection): AbstractCollection
+    public function set(array $collection): Collection
     {
         foreach ($collection as $item) {
             $this->add($item);
@@ -64,8 +77,21 @@ abstract class AbstractCollection implements \IteratorAggregate, \Countable
     /**
      * Add single object to the collection
      * @param object $item
-     * @return AbstractCollection
+     * @return Collection
      */
-    abstract public function add(object $item): AbstractCollection;
+    public function add($item): Collection
+    {
+        
+    }
+    
+    protected function isValidItemType($item): bool
+    {
+        $validType = static::ITEM_TYPE; 
+        $itemType = gettype($item);
+        
+        return $itemType == 'object'
+            ? $item instanceof $validType
+            : $itemType == $validType;    
+    }
 }
 
