@@ -8,8 +8,6 @@ use Budkovsky\Aid\Exception\CollectionType as CollectionTypeException;
 
 /**
  * Collection trait, implements methods for IteratorAggregate, Countable interfaces
- * @author Budkovsky
- *
  */
 trait CollectionTrait
 {
@@ -88,7 +86,7 @@ trait CollectionTrait
     public function add($item): Collection
     {
         if (!$this->isValidItemType($item)) {
-            throw new CollectionTypeException('Invalid collection\'s item type');
+            throw new CollectionTypeException("Invalid collection's item type");
         }
         $this->collection[] = $item;
         
