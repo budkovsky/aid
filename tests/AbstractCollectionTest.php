@@ -4,7 +4,7 @@ namespace tests;
 use PHPUnit\Framework\TestCase;
 use Budkovsky\Aid\AbstractCollection;
 
-class AbstractCollectionTest extends TestCase
+class CollectionTest extends TestCase
 {
     public function testCanMockEmptyObject(): void
     {
@@ -20,18 +20,5 @@ class AbstractCollectionTest extends TestCase
             AbstractCollection::class,
             $this->getStub()
         );
-    }
-    
-    protected function getStub(): AbstractCollection
-    {
-        return new class extends AbstractCollection {
-            public function add(\stdClass $item): AbstractCollection
-            {
-                $this->collection[] = $item;
-                
-                return $this;
-            }
-        };
-    }
+    }   
 }
-
