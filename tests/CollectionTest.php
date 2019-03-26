@@ -3,7 +3,7 @@ namespace tests;
 
 use PHPUnit\Framework\TestCase;
 use Budkovsky\Aid\Collection;
-use Budkovsky\Aid\Exception\CollectionType as CollectionTypeExceptiion;
+use Budkovsky\Aid\Exception\CollectionTypeException;
 
 class CollectionTest extends TestCase
 {
@@ -38,13 +38,13 @@ class CollectionTest extends TestCase
     
     public function testThrowsExceptionOnInvalidItemType1(): void
     {
-        $this->expectException(CollectionTypeExceptiion::class);
+        $this->expectException(CollectionTypeException::class);
         Collection::create([new \ArrayObject()]);
     }
     
     public function testThrowsExceptionOnInvalidItemType2(): void
     {
-        $this->expectException(CollectionTypeExceptiion::class);
+        $this->expectException(CollectionTypeException::class);
         Collection::create()->add(new \ArrayIterator());
     }
     
