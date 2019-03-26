@@ -3,8 +3,7 @@ declare(strict_types=1);
 
 namespace Budkovsky\Aid;
 
-use Budkovsky\Aid\Exception\CollectionType as CollectionTypeException;
-
+use Budkovsky\Aid\Exception\CollectionTypeException;
 
 /**
  * Collection trait, implements methods for IteratorAggregate, Countable interfaces

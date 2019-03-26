@@ -1,17 +1,15 @@
 {
 	"name": "budkovsky/aid",
-	"authors": [
-		{
-			"name": "Budkovsky"
-		}
-	],
 	"autoload": {
 		"psr-4": {
 			"Budkovsky\\Aid\\" : "src"
 		}
 	},
 	"require": {
+		"php": "^7.1"
+	},
+	"require-dev": {
 		"phpunit/phpunit": "^8.0"
 	},
-	"minimum-stability": "dev"
+	"minimum-stability": "stable"
 }
