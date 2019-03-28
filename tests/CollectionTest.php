@@ -1,24 +1,24 @@
 <?php
+declare(strict_types=1);
+
 namespace tests;
 
 use PHPUnit\Framework\TestCase;
-use Budkovsky\Aid\Collection;
-use Budkovsky\Aid\Exception\CollectionTypeException;
+use Budkovsky\Aid\Example\StdClassCollection;
 
-class CollectionTest extends TestCase
+class StdClassCollectionTest extends TestCase
 {
     public function testCanCreateEmptyCollection(): void
     {
         $this->assertInstanceOf(
-            Collection::class, 
-            new Collection()
+            StdClassCollection::class, 
+            new StdClassCollection()
         );
         
         $this->assertInstanceOf(
-            Collection::class,
-            Collection::create()
+            StdClassCollection::class,
+            StdClassCollection::create()
         );
-        
     }
     
     public function testCanIterate(): void
@@ -38,19 +38,20 @@ class CollectionTest extends TestCase
     
     public function testThrowsExceptionOnInvalidItemType1(): void
     {
-        $this->expectException(CollectionTypeException::class);
-        Collection::create([new \ArrayObject()]);
+        $this->expectException(\TypeError::class);
+        StdClassCollection::create([new \ArrayObject()]);
     }
     
     public function testThrowsExceptionOnInvalidItemType2(): void
     {
-        $this->expectException(CollectionTypeException::class);
-        Collection::create()->add(new \ArrayIterator());
+        $this->expectException(\TypeError::class);
+        StdClassCollection::create()->add(new \ArrayIterator());
     }
     
-    private function getTwoEmptyElementCollection(): Collection
+    
+    private function getTwoEmptyElementCollection(): StdClassCollection
     {
-        return Collection::create([
+        return StdClassCollection::create([
             new \stdClass(),
             new \stdClass(),
         ]);

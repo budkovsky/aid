@@ -21,5 +21,10 @@ class StdClassCollection implements \IteratorAggregate, \Countable
         
         return $this;
     }
+    
+    public static function create(array $collection = []): StdClassCollection
+    {
+        return new static($collection);
+    }
 }
 
