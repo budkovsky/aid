@@ -1,9 +1,26 @@
 # aid
+A library with helpers and other useful snippets of code.
 
-## Collection
+## CollectionTrait
 ```
-Budkovsky\Aid\Collection
+Budkovsky\Aid\CollectionTrait
 ```
-Universal class or trait for single-type collection.
-Implements IteratorAggregate nad Countable interfaces. 
-When extending, set selected type in `typeItem` property.
+Trait for easy implementation of typed collection. 
+Implements methods for IteratorAggregate nad Countable interfaces. 
+When use, define add() method with collection's items type hinting. 
+Example of use:
+```
+use Budkovsky\Aid\CollectionTrait;
+
+class StdClassCollection implements \IteratorAggregate, \Countable
+{
+    use CollectionTrait;
+    
+    public function add(\stdClass $stdClass): StdClassCollection
+    {
+        $this->collection[] = $stdClass;
+        
+        return $this;
+    }
+}
+```
