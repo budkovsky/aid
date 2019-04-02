@@ -9,7 +9,7 @@ Trait for easy implementation of typed collection.
 Implements methods for IteratorAggregate nad Countable interfaces. 
 When use, define add() method with collection's items type hinting. 
 Example of use:
-```
+```php
 use Budkovsky\Aid\CollectionTrait;
 
 class StdClassCollection implements \IteratorAggregate, \Countable
