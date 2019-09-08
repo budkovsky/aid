@@ -12,7 +12,15 @@ abstract class CollectionAbstract implements CollectionInterface
      * Collection's container
      * @var array
      */
-    protected $collection = [];
+    protected $collection;
+
+    /**
+     * @inheritdoc
+     */
+    public function __construct(?array $collection = null)
+    {
+        $this->collection = $collection ?? [];
+    }
 
     /**
      * {@inheritDoc}
@@ -52,5 +60,15 @@ abstract class CollectionAbstract implements CollectionInterface
     public function toArray(): array
     {
         return $this->collection;
+    }
+
+    /**
+     * Static factory
+     * {@inheritdoc}
+     * @return CollectionAbstract
+     */
+    public static function create(): CollectionAbstract
+    {
+        return new static;
     }
 }
