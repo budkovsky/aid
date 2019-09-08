@@ -2,6 +2,7 @@
 	"name": "budkovsky/aid",
 	"autoload": {
 		"psr-4": {
+			"Budkovsky\\Aid\\Tests\\": "tests",
 			"Budkovsky\\Aid\\" : "src"
 		}
 	},
