@@ -72,6 +72,11 @@ class ValidationResult implements StaticFactoryInterface
         return $this;
     }
 
+    public function mergeValid(bool $valid): ValidationResult
+    {
+        $this->valid = $this->valid === null ? $valid : $this->valid && $valid;
+    }
+
     public function getMessages(): StringCollection
     {
         return $this->messages;
