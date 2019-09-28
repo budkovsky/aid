@@ -4,9 +4,9 @@ declare(strict_types = 1);
 namespace Budkovsky\Aid\Abstraction;
 
 /**
- * Collection with index abstract class
+ * Collection with named indexes abstract class
  */
-abstract class CollectionWithIndexAbstract extends CollectionAbstract
+abstract class CollectionIndexedAbstract extends CollectionAbstract
 {
 
     /**
