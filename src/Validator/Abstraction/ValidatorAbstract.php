@@ -6,8 +6,9 @@ use Budkovsky\Aid\Abstraction\Observable;
 use Budkovsky\Aid\Abstraction\Observer;
 use Budkovsky\Aid\Collection\ObserverCollection;
 use Budkovsky\Aid\Validator\Entity\ValidationResult;
+use Budkovsky\Aid\Abstraction\StaticFactoryInterface;
 
-abstract class ValidatorAbstract implements ValidatorInterface, SilentModeInterface, Observable, Observer
+abstract class ValidatorAbstract implements ValidatorInterface, SilentModeInterface, Observable, Observer, StaticFactoryInterface
 {
     /** @var bool */
     protected static $silentMode = false;
@@ -24,6 +25,10 @@ abstract class ValidatorAbstract implements ValidatorInterface, SilentModeInterf
         $this->result = new ValidationResult($name);
     }
 
+    public static function create(?string $name = null): ValidatorAbstract
+    {
+        return new static($name);
+    }
 
     public function isValid(): ?bool
     {
@@ -49,11 +54,11 @@ abstract class ValidatorAbstract implements ValidatorInterface, SilentModeInterf
         return $this;
     }
 
-    public function notifyObservers(?ValidationResult $validationReslut = null): ValidatorAbstract
+    public function notifyObservers(): ValidatorAbstract
     {
         foreach ($this->observers as $observer) {
             /** @var Observer $observer */
-            $observer->observerUpdate($validationReslut);
+            $observer->observerUpdate($this->result);
         }
 
         return $this;
