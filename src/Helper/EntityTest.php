@@ -17,9 +17,7 @@ class EntityTest
      */
     public static function hasNoPublicProperties(\ReflectionClass $reflector, array $exclusions = []): bool
     {
-        $publicProperties = $reflector->getProperties(\ReflectionProperty::IS_PUBLIC);
-
-        foreach ($publicProperties as $property) {
+        foreach ($reflector->getProperties(\ReflectionProperty::IS_PUBLIC) as $property) {
             /** @var \ReflectionProperty $property */
             if (!\in_array($property->name, $exclusions)) {
                 return false;
@@ -39,11 +37,12 @@ class EntityTest
     {
         foreach ($reflector->getProperties() as $property) {
             /** @var \ReflectionProperty $property */
-            if (\in_array($property, $exclusions)) {
+            if (\in_array($property->getName(), $exclusions)) {
                 continue;
             }
             if (!self::hasGetter($reflector, $property)) {
                 echo "{$reflector->getName()}::{$property->getName()} doesn't have valid getter";
+                die;
                 return false;
             }
         }
@@ -61,7 +60,7 @@ class EntityTest
     {
         foreach ($reflector->getProperties() as $property) {
             /** @var \ReflectionProperty $property */
-            if (\in_array($property, $exclusions)) {
+            if (\in_array($property->getName(), $exclusions)) {
                 continue;
             }
             if (!self::hasSetter($reflector, $property)) {
@@ -82,8 +81,13 @@ class EntityTest
     private static function hasGetter(\ReflectionClass $reflector, \ReflectionProperty $property): bool
     {
         return
-            $reflector->hasMethod("get{$property->getName()}")
-            || $reflector->hasMethod("is{$property->getName()}");
+            $reflector->hasMethod(
+                    self::getGetterName($property->getName())
+                )
+            || $reflector->hasMethod(
+                    self::getBooleanGetterName($property->getName())
+                )
+        ;
     }
 
     /**
@@ -94,6 +98,37 @@ class EntityTest
      */
     private static function hasSetter(\ReflectionClass $reflector, \ReflectionProperty $property): bool
     {
-        return $reflector->hasMethod("set{$property->getName()}");
+        return $reflector->hasMethod(
+            self::getSetterName($property->getName())
+        );
+    }
+
+    /**
+     *
+     * @param string $propertyName
+     * @return string
+     */
+    private static function getGetterName(string $propertyName): string
+    {
+        return sprintf(
+            'get%s',
+            \ucfirst($propertyName)
+        );
+    }
+
+    private static function getBooleanGetterName(string $propertyName): string
+    {
+        return sprintf(
+            'is%s',
+            \ucfirst($propertyName)
+        );
+    }
+
+    private static function getSetterName(string $propertyName): string
+    {
+        return sprintf(
+            'set%s',
+            \ucfirst($propertyName)
+        );
     }
 }
