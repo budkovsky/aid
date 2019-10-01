@@ -8,6 +8,9 @@ use Budkovsky\Aid\Collection\ObserverCollection;
 use Budkovsky\Aid\Validator\Entity\ValidationResult;
 use Budkovsky\Aid\Abstraction\StaticFactoryInterface;
 
+use Budkovsky\Aid\Abstraction\EntityInterface;
+use Budkovsky\Aid\Collection\ValidatorCollection;
+
 abstract class ValidatorAbstract implements ValidatorInterface, SilentModeInterface, Observable, Observer, StaticFactoryInterface
 {
     /** @var bool */
@@ -19,10 +22,16 @@ abstract class ValidatorAbstract implements ValidatorInterface, SilentModeInterf
     /** @var ValidationResult */
     protected $result;
 
+    /** @var ValidatorCollection */
+    protected $extensions;
+
+
+
     public function __construct(string $name)
     {
         $this->observers = new ObserverCollection();
         $this->result = new ValidationResult($name);
+        $this->extensions = new ValidatorCollection();
     }
 
     public static function create(?string $name = null): ValidatorAbstract
@@ -33,6 +42,50 @@ abstract class ValidatorAbstract implements ValidatorInterface, SilentModeInterf
     public function isValid(): ?bool
     {
         return $this->result->isValid();
+    }
+
+    public function validate(?EntityInterface $entity = null): ValidatorAbstract
+    {
+        if ($entity) {
+            $this->setSubjectName($entity);
+            $this->processValidation($entity);
+            $this->processExtensions($entity);
+            $this->notifyObserver();
+        }
+
+        return $this;
+    }
+
+    private function processExtensions(EntityInterface $entity): ValidatorAbstract
+    {
+        foreach ($this->extensions as $validator) {
+            /** @var ValidatorAbstract $validator */
+            $validator->addObserver($this)->validate($entity);
+        }
+
+        return $this;
+    }
+
+    public function getExtensions(): ValidatorCollection
+    {
+        return $this->extensions;
+    }
+
+    public function setExtensions(ValidatorCollection $extensions): ValidatorAbstract
+    {
+        $this->extensions = $extensions;
+
+        return $this;
+    }
+
+    public function addExtension(ValidatorAbstract $extension): ValidatorAbstract
+    {
+        $this->extensions->add($extension);
+    }
+
+    private function setSubjectName(EntityInterface $entity): void
+    {
+        $this->subjectName = substr(basename(\get_class($entity)), 0, -4);
     }
 
     public function setSilentMode(bool $silentMode): ValidatorAbstract
