@@ -32,7 +32,7 @@ abstract class ValidatorAbstract implements ValidatorInterface, SilentModeInterf
     {
         $this->name = $name ?? \substr(static::class, 0, \strpos(self::class, 'Validator'));
         $this->observers = new ObserverCollection();
-        $this->result = new ValidationResult($name);
+        $this->result = new ValidationResult($this->name);
         $this->extensions = new ValidatorCollection();
     }
 

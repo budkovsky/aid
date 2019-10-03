@@ -35,7 +35,7 @@ class ExampleAlphaValidator extends ValidatorAbstract
             $this->result->setLastMessage($message);
         }
 
-        $this->notifyObservers($this->result);
+        $this->notifyObservers();
 
         return $this;
     }
