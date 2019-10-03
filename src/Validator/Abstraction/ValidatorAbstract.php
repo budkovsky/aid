@@ -13,6 +13,9 @@ use Budkovsky\Aid\Collection\ValidatorCollection;
 
 abstract class ValidatorAbstract implements ValidatorInterface, SilentModeInterface, Observable, Observer, StaticFactoryInterface
 {
+    /** @var string */
+    protected $name;
+
     /** @var bool */
     protected static $silentMode = false;
 
@@ -25,10 +28,9 @@ abstract class ValidatorAbstract implements ValidatorInterface, SilentModeInterf
     /** @var ValidatorCollection */
     protected $extensions;
 
-
-
-    public function __construct(string $name)
+    public function __construct(?string $name =null)
     {
+        $this->name = $name ?? \substr(static::class, 0, \strpos(self::class, 'Validator'));
         $this->observers = new ObserverCollection();
         $this->result = new ValidationResult($name);
         $this->extensions = new ValidatorCollection();
@@ -37,6 +39,11 @@ abstract class ValidatorAbstract implements ValidatorInterface, SilentModeInterf
     public static function create(?string $name = null): ValidatorAbstract
     {
         return new static($name);
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
     }
 
     public function isValid(): ?bool
@@ -88,16 +95,16 @@ abstract class ValidatorAbstract implements ValidatorInterface, SilentModeInterf
         $this->subjectName = substr(basename(\get_class($entity)), 0, -4);
     }
 
-    public function setSilentMode(bool $silentMode): ValidatorAbstract
+    final public function setSilentMode(bool $silentMode): ValidatorAbstract
     {
-        static::$silentMode = $silentMode;
+        self::$silentMode = $silentMode;
 
         return $this;
     }
 
-    public function isSilentMode(): bool
+    final public function isSilentMode(): bool
     {
-        return static::silentMode;
+        return self::silentMode;
     }
 
     public function addObserver(Observer $observer): ValidatorAbstract
