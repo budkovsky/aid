@@ -57,7 +57,7 @@ abstract class ValidatorAbstract implements ValidatorInterface, SilentModeInterf
             $this->setSubjectName($entity);
             $this->processValidation($entity);
             $this->processExtensions($entity);
-            $this->notifyObserver();
+            $this->notifyObservers();
         }
 
         return $this;
@@ -104,7 +104,7 @@ abstract class ValidatorAbstract implements ValidatorInterface, SilentModeInterf
 
     final public function isSilentMode(): bool
     {
-        return self::silentMode;
+        return self::$silentMode;
     }
 
     public function addObserver(Observer $observer): ValidatorAbstract
