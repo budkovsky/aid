@@ -30,7 +30,11 @@ abstract class ValidatorAbstract implements ValidatorInterface, SilentModeInterf
 
     public function __construct(?string $name =null)
     {
-        $this->name = $name ?? \substr(static::class, 0, \strpos(self::class, 'Validator'));
+        $this->name = $name ?? \substr(
+            (new \ReflectionClass($this))->getShortName(),
+            0,
+            -(\strlen('Validator'))
+        );
         $this->observers = new ObserverCollection();
         $this->result = new ValidationResult($this->name);
         $this->extensions = new ValidatorCollection();
@@ -54,7 +58,6 @@ abstract class ValidatorAbstract implements ValidatorInterface, SilentModeInterf
     public function validate(?EntityInterface $entity = null): ValidatorAbstract
     {
         if ($entity) {
-            $this->setSubjectName($entity);
             $this->processValidation($entity);
             $this->processExtensions($entity);
             $this->notifyObservers();
@@ -88,11 +91,6 @@ abstract class ValidatorAbstract implements ValidatorInterface, SilentModeInterf
     public function addExtension(ValidatorAbstract $extension): ValidatorAbstract
     {
         $this->extensions->add($extension);
-    }
-
-    private function setSubjectName(EntityInterface $entity): void
-    {
-        $this->subjectName = substr(basename(\get_class($entity)), 0, -4);
     }
 
     final public function setSilentMode(bool $silentMode): ValidatorAbstract
