@@ -1,7 +1,7 @@
 <?php
 declare(strict_types = 1);
 
-namespace Abstraction;
+namespace Budkovsky\Aid\Abstraction;
 
 /**
  * Abstract factory interface
