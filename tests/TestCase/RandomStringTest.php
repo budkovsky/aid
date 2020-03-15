@@ -13,7 +13,6 @@ class RandomStringTest extends TestCase
         for ($i=100; $i>0; $i--) {
             $randomString = RandomString::get();
             $this->assertNotContains($randomString, $results);
-            echo $randomString.PHP_EOL;
             $results[] = $randomString;
         }
     }
