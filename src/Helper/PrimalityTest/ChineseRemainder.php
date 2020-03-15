@@ -3,12 +3,9 @@ declare(strict_types = 1);
 
 namespace Budkovsky\Aid\Helper\PrimalityTest;
 
-use Budkovsky\Aid\Helper\ModuloComputing;
-
 /**
  * Chinese Remainder primality test
  * @see https://en.wikipedia.org/wiki/Chinese_remainder_theorem
- * @see https://eduinf.waw.pl/inf/alg/001_search/0017.php
  */
 class ChineseRemainder
 {
@@ -22,6 +19,6 @@ class ChineseRemainder
      */
     public static function isPrime(int $number): bool
     {
-        return $number === 2 || ModuloComputing::moduloPower($number, $number) == 2;
+        return $number === 2 || \bcpowmod('2', (string)$number, (string)$number) == 2;
     }
 }
