@@ -3,11 +3,10 @@ declare(strict_types = 1);
 
 namespace Budkovsky\Aid\Helper\PrimalityTest;
 
-use Budkovsky\Aid\Helper\ModuloComputing;
-
 /**
  * MillerRabin algortihm to test number's primality
- * @see https://eduinf.waw.pl/inf/alg/001_search/0019.php
+ * @see https://rosettacode.org/wiki/Miller%E2%80%93Rabin_primality_test#PHP
+ * @see https://en.wikipedia.org/wiki/Miller%E2%80%93Rabin_primality_test
  */
 class MillerRabin
 {
@@ -17,50 +16,37 @@ class MillerRabin
      * @param int $n
      * @return bool
      */
-    public static function isPrime(int $p, int $n = 20): bool
-    {
-        if (\in_array($p, [2, 3])) {
+    public static function isPrime($n, $k) {
+        if ($n == 2)
             return true;
-        }
-        
-        if ($p % 2 === 0) {
+        if ($n < 2 || $n % 2 == 0)
             return false;
-        }
-        
+            
+        $d = $n - 1;
         $s = 0;
         
-        for ($d = $p -1; $d % 2 === 0; $s++) {
+        while ($d % 2 == 0) {
             $d /= 2;
+            $s++;
         }
         
-        $t = true;
-        
-        for ($i = 1; $i <= $n; $i++) {
-            $a = \mt_rand(2, $p - 2);
-            $x = ModuloComputing::moduloPower($a, $d, $p);
-            if ($x === 1 || $x === $p - 1) {
+        for ($i = 0; $i < $k; $i++) {
+            $a = rand(2, $n-1);
+            
+            $x = bcpowmod((string)$a, (string)$d, (string)$n);
+            if ($x === '1' || $x === (string)($n-1))
                 continue;
-            }
-            for ($j = 1; ($j < $s) && ($x !== ($p - 1)); $j++) {
-                $x = ModuloComputing::moduloMultiply($x, $x, $p);
-                if ($x === 1) {
-                    $t = false;
-                    break;
+                
+                for ($j = 1; $j < $s; $j++) {
+                    $x =  bcmod(bcmul((string)$x, (string)$x), (string)$n);
+                    if ($x === '1')
+                        return false;
+                        if ($x == $n-1)
+                            continue 2;
                 }
-            }
-            
-            if (!$t) {
-                break;
-            }
-            
-            if ($x !== ($p - 1)) {
-                $t = false;
-                break;
-            }
-            
+                return false;
         }
-        
-        return $t;
+        return true;
     }
 }
 
